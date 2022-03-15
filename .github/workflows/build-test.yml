@@ -33,7 +33,9 @@ jobs:
           node-version: '12'
           cache: 'yarn'
       - name: Build bundles
-        run: yarn run rollup
+        run: |
+          yarn install
+          yarn run rollup
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -58,7 +60,9 @@ jobs:
         with:
           name: ${{ github.event.repository.name }}-${{ github.sha }}-${{ github.run_id }}-bundles
       - name: Run tests
-        run: yarn run test-output
+        run: |
+          yarn install
+          yarn run test-output
       - name: Upload test results
         uses: actions/upload-artifact@v2
         with:
