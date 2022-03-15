@@ -1,0 +1,26 @@
+name: Release
+
+on:
+  workflow_run:
+    workflows: [Lint build test]
+    types: [completed]
+    branches: [master]
+
+jobs:
+  release:
+    needs: []
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+          cache: 'npm'
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ github.event.repository.name }}-${{ github.sha }}-${{ github.event.workflow_run.id }}-bundles
+      - name: Release, publish package
+        run: |
+          yarn install
