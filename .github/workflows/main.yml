@@ -99,6 +99,7 @@ jobs:
         with:
           node-version: '16.10.0'
           cache: 'yarn'
+          registry-url: 'https://registry.npmjs.org'
           scope: '@long-wan-ep'
       - name: Download build artifacts
         uses: actions/download-artifact@v2
