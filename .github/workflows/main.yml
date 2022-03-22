@@ -112,4 +112,4 @@ jobs:
           scope: '@long-wan-ep-2'
       - name: Publish package to other org
         run: |
-          npx semantic-release
+          yarn publish
