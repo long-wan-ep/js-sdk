@@ -99,6 +99,7 @@ jobs:
         with:
           node-version: '16.10.0'
           cache: 'yarn'
+          scope: '@long-wan-ep'
       - name: Download build artifacts
         uses: actions/download-artifact@v2
         with:
