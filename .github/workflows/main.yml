@@ -109,6 +109,7 @@ jobs:
           npx semantic-release
       - uses: actions/setup-node@v2
         with:
+          registry-url: 'https://registry.npmjs.org'
           scope: '@long-wan-ep-2'
       - name: Publish package to other org
         run: |
