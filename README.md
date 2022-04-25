@@ -1,6 +1,7 @@
 <img src="https://www.elasticpath.com/themes/custom/bootstrap_sass/logo.svg" alt="" width="400" />
 
 fork test
+test
 
 # Elastic Path Commerce Cloud JavaScript SDK
 
