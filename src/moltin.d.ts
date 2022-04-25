@@ -43,6 +43,8 @@ import { PCMVariationsEndpoint } from "./types/pcm-variations"
 import { PcmVariationsRelationshipsEndpoint } from "./types/pcm-variations-relationships"
 import {UserAuthenticationPasswordProfileEndpoint
 } from "./types/user-authentication-password-profile";
+import { MetricsEndpoint } from './types/metrics'
+import { PersonalDataEndpoint } from './types/personal-data'
 
 export * from './types/config'
 export * from './types/storage'
@@ -70,6 +72,7 @@ export * from './types/flow'
 export * from './types/transaction'
 export * from './types/settings'
 export * from './types/promotions'
+export * from './types/catalog'
 export * from './types/catalogs'
 export * from './types/catalogs-nodes'
 export * from './types/catalogs-products'
@@ -94,6 +97,8 @@ export * from './types/account-members'
 export * from './types/account-memberships'
 export * from './types/pcm-variations'
 export * from './types/pcm-variations-relationships'
+export * from './types/metrics'
+export * from './types/personal-data'
 
 
 // UMD
@@ -143,7 +148,9 @@ export class Moltin {
   PasswordProfile: PasswordProfileEndpoint
   UserAuthenticationPasswordProfile: UserAuthenticationPasswordProfileEndpoint;
   PCMVariations: PCMVariationsEndpoint;
-  PcmVariationsRelationship: PcmVariationsRelationshipsEndpoint
+  PcmVariationsRelationship: PcmVariationsRelationshipsEndpoint;
+  Metrics: MetricsEndpoint
+  PersonalData: PersonalDataEndpoint;
 
   Cart(id?: string): CartEndpoint // This optional cart id is super worrying when using the SDK in a node server :/
   constructor(config: Config)

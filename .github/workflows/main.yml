@@ -1,10 +1,11 @@
-name: Lint build test
+name: CI/CD for the js-sdk
 
 on:
   push:
   pull_request:
     branches:
-      - 'master'
+      - 'main'
+      - 'beta'
 
 jobs:
   # This job uses skip-duplicate-actions to skip one of the duplicate workflow runs when you push to a branch with an open PR.
@@ -19,6 +20,7 @@ jobs:
         with:
           skip_after_successful_duplicate: 'true'
           concurrent_skipping: 'same_content_newer'
+          do_not_skip: '["push"]'
 
   lint:
     needs: [check_duplicate_workflow]
@@ -34,11 +36,12 @@ jobs:
       - name: Run lint
         run: |
           yarn install
-          yarn run lint
+          yarn lint
   
   build:
-    needs: [lint]
+    needs: [check_duplicate_workflow]
     runs-on: ubuntu-20.04
+    if: ${{ needs.check_duplicate_workflow.outputs.should_skip != 'true' }}
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -49,7 +52,7 @@ jobs:
       - name: Build bundles
         run: |
           yarn install
-          yarn run rollup
+          yarn rollup
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -58,8 +61,9 @@ jobs:
           retention-days: 3
 
   test:
-    needs: [build]
+    needs: [check_duplicate_workflow]
     runs-on: ubuntu-20.04
+    if: ${{ needs.check_duplicate_workflow.outputs.should_skip != 'true' }}
     env:
       MOCHA_FILE: test-results/mocha/test-results.xml
     steps:
@@ -69,14 +73,10 @@ jobs:
         with:
           node-version: '12'
           cache: 'yarn'
-      - name: Download build artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ github.event.repository.name }}-${{ github.sha }}-${{ github.run_id }}-bundles
       - name: Run tests
         run: |
           yarn install
-          yarn run test-output
+          yarn test-output
       - name: Upload test results
         uses: actions/upload-artifact@v2
         with:
@@ -89,17 +89,18 @@ jobs:
           files: test-results/**/*.xml
   
   release:
-    needs: [test]
+    needs: [lint, build, test]
     runs-on: ubuntu-20.04
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/beta') }}
     env:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN_ELASTICPATH }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '12'
+          node-version: '16.10.0'
           cache: 'yarn'
       - name: Download build artifacts
         uses: actions/download-artifact@v2
@@ -108,4 +109,4 @@ jobs:
       - name: Release, publish package
         run: |
           yarn install
-          echo ${NPM_TOKEN}
+          npx semantic-release

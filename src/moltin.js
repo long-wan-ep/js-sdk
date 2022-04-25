@@ -1,4 +1,4 @@
-import 'fetch-everywhere'
+import './utils/fetch-polyfill'
 import 'es6-promise'
 
 import Config from './config'
@@ -41,6 +41,8 @@ import AccountMembersEndpoint from './endpoints/account-members'
 import AccountAuthenticationSettingsEndpoint from './endpoints/account-authentication-settings'
 import AccountMembershipsEndpoint from './endpoints/account-memberships'
 import PCMVariationsEndpoint from './endpoints/pcm-variations'
+import MetricsEndpoint from './endpoints/metrics'
+import PersonalDataEndpoint from './endpoints/personal-data'
 
 import { cartIdentifier, tokenInvalid, getCredentials } from './utils/helpers'
 import CatalogsEndpoint from './endpoints/catalogs'
@@ -84,6 +86,7 @@ export default class Moltin {
     this.Promotions = new PromotionsEndpoint(config)
     this.Variations = new VariationsEndpoint(config)
     this.PCMVariations = new PCMVariationsEndpoint(config)
+    this.PersonalData = new PersonalDataEndpoint(config)
     this.AuthenticationRealm = new AuthenticationRealmEndpoint(config)
     this.OidcProfile = new OidcProfileEndpoint(config)
     this.UserAuthenticationInfo = new UserAuthenticationInfoEndpoint(config)
@@ -99,6 +102,7 @@ export default class Moltin {
     this.UserAuthenticationPasswordProfile = new UserAuthenticationPasswordProfileEndpoint(
       config
     )
+    this.Metrics = new MetricsEndpoint(config)
   }
 
   // Expose `Cart` class on Moltin class
