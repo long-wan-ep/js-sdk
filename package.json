@@ -22,7 +22,7 @@
   "types": "src/moltin.d.ts",
   "repository": {
     "type": "git",
-    "url": "git://github.com/moltin/js-sdk.git"
+    "url": "git://github.com/long-wan-ep/js-sdk.git"
   },
   "release": {
     "branches": ["main", "beta"]
