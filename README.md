@@ -278,3 +278,4 @@ You can learn more about the Rollup API and configuration [here](https://github.
 - For more information about the license, see [MIT License](https://github.com/moltin/js-sdk/blob/main/LICENSE).
 
 Test
+test
