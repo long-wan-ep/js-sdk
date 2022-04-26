@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-20.04
     if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/beta') }}
     env:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN_ELASTICPATH }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Check out repository code
@@ -109,4 +109,4 @@ jobs:
       - name: Release, publish package
         run: |
           yarn install
-          npx semantic-release --dry-run
+          npx semantic-release
